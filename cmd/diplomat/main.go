@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/gosimple/slug"
+
 	"github.com/qjcg/diploma"
 )
 
