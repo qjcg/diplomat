@@ -1,12 +1,6 @@
-package main
+package diploma
 
 import (
-	"flag"
-	"log"
-	"os"
-	"path/filepath"
-	"strings"
-
 	"github.com/gosimple/slug"
 	"github.com/jung-kurt/gofpdf"
 )
@@ -39,6 +33,12 @@ func WriteConfig(fileStr string) error {
 	return nil
 }
 
+// Create an initial PNG image, with text added.
+// TODO: CreatePDF should take the byteslice returned by this function as input (?).
+func CreatePNG(d *Diploma) ([]byte, error) {
+	return []byte{}, nil
+}
+
 // Create a Diploma PDF and write it to disk.
 // FIXME: UTF-8 characters don't display properly, since cp1252 encoding is used
 // 		See http://godoc.org/github.com/jung-kurt/gofpdf#Fpdf.SetFont
@@ -58,33 +58,4 @@ func CreatePDF(d *Diploma) error {
 		return err
 	}
 	return nil
-}
-
-func main() {
-	base := flag.String("b", "logo.png", "base image (background)")
-	course := flag.String("c", "Web Programming for Bureaucrats", "course name")
-	dates := flag.String("d", "July 7-10, 2015 (22.5 hours)", "training dates")
-	students := flag.String("s", "Joe Student, Jenny Student, Français Gérèçêêëà", "list of students (comma-separated)")
-	instructor := flag.String("i", "John Gosset", "instructor's name")
-	flag.Parse()
-
-	// ensure base image uses an absolute path
-	absBase, err := filepath.Abs(*base)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// create PDF output dir and cd there
-	pdfDir := "diplomas/" + slug.Make(*course)
-	os.MkdirAll(pdfDir, 0755)
-	os.Chdir(pdfDir)
-
-	studentsSlice := strings.Split(*students, ",")
-	for _, s := range studentsSlice {
-		d := &Diploma{absBase, *course, *dates, *instructor, strings.TrimSpace(s)}
-		err := CreatePDF(d)
-		if err != nil {
-			log.Fatal(err)
-		}
-	}
 }
