@@ -1,0 +1,5 @@
+# vim stuff
+*.swp
+Session.vim
+
+*.pdf
