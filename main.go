@@ -3,12 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
-	//"image"
-	//"image/png"
-	//"io/ioutil"
 	"strings"
 
-	//"code.google.com/p/freetype-go/freetype"
 	"github.com/jung-kurt/gofpdf"
 )
 
@@ -20,21 +16,6 @@ func main() {
 	flag.Parse()
 
 	txt := strings.Join([]string{*instructor, *students, *dates}, "\n")
-
-	// Build image
-	//bytes, err := ioutil.ReadFile(*base)
-	//if err != nil {
-	//	return err
-	//}
-	//img, err := png.Decode(bytes)
-	//if err != nil {
-	//	return err
-	//}
-
-	//ctx := freetype.NewContext()
-	//ctx.SetSrc(img)
-	// FIXME
-	//ctx.SetDst()
 
 	// Build PDF
 	pdf := gofpdf.New("L", "in", "Letter", "")
