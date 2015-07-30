@@ -1,61 +1,76 @@
 package diploma
 
 import (
+	"encoding/json"
+	"log"
+	"os"
+
 	"github.com/gosimple/slug"
 	"github.com/jung-kurt/gofpdf"
 )
 
-type Diploma struct {
-	BackgroundImage string
-	Course          string
-	Dates           string
-	Instructor      string
-	Student         string
+// A Session represents a training session.
+type Session struct {
+	Course     string
+	Period     string
+	Instructor string
+	Students   []string
 }
 
-// DiplomaText is a string to be displayed on a Diploma, specifying coordinates
-// and font information.
-type DiplomaText struct {
-	X        float64
-	Y        float64
-	FontName string
-	FontSize int
-	Text     string
+// A Template conains an image file path along with a map of text overlay coordinates.
+type Template struct {
+	Image   string
+	Overlay map[string][2]float64
 }
 
-// Read config from JSON file.
-func ReadConfig(fileStr string) error {
-	return nil
+// A DiplomaSet contains an OutputDir for PDFs, and embedded Template and Session structs.
+type DiplomaSet struct {
+	Session
+	Template
+	OutputDir string
 }
 
-// Write config to JSON file in diplomas directory.
-func WriteConfig(fileStr string) error {
-	return nil
+// Dump config to JSON file in diplomas directory.
+func (d *DiplomaSet) Dump() {
+	data, err := json.MarshalIndent(d, "", "  ")
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Print("%v", data)
 }
 
-// Create an initial PNG image, with text added.
-// TODO: CreatePDF should take the byteslice returned by this function as input (?).
-func CreatePNG(d *Diploma) ([]byte, error) {
-	return []byte{}, nil
+// Load reads config from JSON file, populating a DiplomaSet.
+func (d *DiplomaSet) Load(configFile string) {
+	return
 }
 
-// Create a Diploma PDF and write it to disk.
+// Render DiplomaSet to PDF files.
 // FIXME: UTF-8 characters don't display properly, since cp1252 encoding is used
 // 		See http://godoc.org/github.com/jung-kurt/gofpdf#Fpdf.SetFont
-func CreatePDF(d *Diploma) error {
-	pdf := gofpdf.New("L", "in", "Letter", "")
-	pdf.AddPage()
-	pdf.SetFont("Times", "", 30)
-	pdf.Image(d.BackgroundImage, 0.3, 0.3, 0, 0, false, "", 0, "")
-	pdf.Text(4, 1, d.Course)
-	pdf.Text(4, 2, d.Dates)
-	pdf.Text(4, 3, d.Instructor)
-	pdf.SetFont("Times", "", 50)
-	pdf.Text(4, 4, d.Student)
+func (d *DiplomaSet) ToPDF() {
+	// Create OutputDir for PDFs
+	os.MkdirAll(d.OutputDir, 0700)
 
-	err := pdf.OutputFileAndClose(slug.Make(d.Student) + ".pdf")
-	if err != nil {
-		return err
+	for _, s := range d.Students {
+		pdf := gofpdf.New("L", "in", "Letter", "")
+		pdf.AddPage()
+
+		pdf.SetFontLocation(".")
+		pdf.AddFont("DroidSans", "", "DroidSans.json")
+
+		pdf.Image(d.Image, d.Overlay["Image"][0], d.Overlay["Image"][1], 0, 0, false, "", 0, "")
+
+		pdf.SetFont("DroidSans", "", 50)
+		pdf.Text(d.Overlay["Student"][0], d.Overlay["Student"][1], s)
+		pdf.SetFont("DroidSans", "", 30)
+		pdf.Text(d.Overlay["Course"][0], d.Overlay["Course"][1], d.Course)
+		pdf.SetFont("DroidSans", "", 10)
+		pdf.Text(d.Overlay["Period"][0], d.Overlay["Period"][1], d.Period)
+		pdf.Text(d.Overlay["Instructor"][0], d.Overlay["Instructor"][1], d.Instructor)
+
+		err := pdf.OutputFileAndClose(d.OutputDir + "/" + slug.Make(s) + ".pdf")
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
-	return nil
 }
