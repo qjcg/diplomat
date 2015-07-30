@@ -2,8 +2,6 @@ package main
 
 import (
 	"flag"
-	//"log"
-	//"path/filepath"
 	"strings"
 
 	"github.com/gosimple/slug"
@@ -13,18 +11,17 @@ import (
 )
 
 func main() {
-	//base := flag.String("b", "logo.png", "base image (background)")
 	course := flag.String("c", "", "course name")
 	period := flag.String("p", "", "training period (dates)")
 	students := flag.String("s", "Joe Learnery", "list of students (comma-separated)")
 	instructor := flag.String("i", "Rory Q. Teachalot", "instructor's name")
+
+	// TODO: add template flag handling logic
+	//template := flag.String("t", "default", "template")
 	flag.Parse()
 
-	// ensure base image uses an absolute path
-	//absBase, err := filepath.Abs(*base)
-	//if err != nil {
-	//	log.Fatal(err)
-	//}
+	// TODO: use cli template option if provided
+	template := templates.Default
 
 	session := &diploma.Session{
 		Course:     *course,
@@ -32,8 +29,6 @@ func main() {
 		Instructor: *instructor,
 		Students:   strings.Split(*students, ","),
 	}
-
-	template := templates.Default
 
 	d := &diploma.DiplomaSet{
 		Session:   *session,
