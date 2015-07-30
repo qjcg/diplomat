@@ -1,6 +1,7 @@
 package diploma
 
 import (
+	"os"
 	"testing"
 
 	"github.com/gosimple/slug"
@@ -46,4 +47,10 @@ func TestToPDF(t *testing.T) {
 	for _, d := range diplomaSetTests {
 		d.ToPDF()
 	}
+}
+
+func TestMain(m *testing.M) {
+	exitStatus := m.Run()
+	os.RemoveAll("diplomas")
+	os.Exit(exitStatus)
 }
