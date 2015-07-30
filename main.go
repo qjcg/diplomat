@@ -36,7 +36,7 @@ func (d *DiplomaSet) Dump() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Print("%v", data)
+	log.Print("%s", data)
 }
 
 // Load reads config from JSON file, populating a DiplomaSet.
@@ -68,6 +68,7 @@ func (d *DiplomaSet) ToPDF() {
 		pdf.Text(d.Overlay["Period"][0], d.Overlay["Period"][1], d.Period)
 		pdf.Text(d.Overlay["Instructor"][0], d.Overlay["Instructor"][1], d.Instructor)
 
+		// FIXME: do this via a separate function for greater testability?
 		err := pdf.OutputFileAndClose(d.OutputDir + "/" + slug.Make(s) + ".pdf")
 		if err != nil {
 			log.Fatal(err)

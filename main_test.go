@@ -49,6 +49,12 @@ func TestToPDF(t *testing.T) {
 	}
 }
 
+func TestDump(t *testing.T) {
+	for _, d := range diplomaSetTests {
+		d.Dump()
+	}
+}
+
 func TestMain(m *testing.M) {
 	exitStatus := m.Run()
 	os.RemoveAll("diplomas")
