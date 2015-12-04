@@ -57,6 +57,6 @@ func TestDump(t *testing.T) {
 
 func TestMain(m *testing.M) {
 	exitStatus := m.Run()
-	os.RemoveAll("diplomas")
+	//os.RemoveAll("diplomas")
 	os.Exit(exitStatus)
 }
