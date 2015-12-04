@@ -56,7 +56,9 @@ func (d *DiplomaSet) ToPDF() {
 
 	for _, s := range d.Students {
 		pdf := gopdf.GoPdf{}
-		pdf.Start(gopdf.Config{Unit: "in", PageSize: gopdf.Rect{W: 11, H: 8.5}})
+		// Letter: 612x792
+		// See https://www.gnu.org/software/gv/manual/html_node/Paper-Keywords-and-paper-size-in-points.html
+		pdf.Start(gopdf.Config{Unit: "pt", PageSize: gopdf.Rect{W: 792, H: 612}})
 		pdf.AddPage()
 
 		err := pdf.AddTTFFont("DroidSans", DroidSansPath)
@@ -67,7 +69,7 @@ func (d *DiplomaSet) ToPDF() {
 		pdf.Image(d.Image, d.Overlay["Image"][0], d.Overlay["Image"][1], nil)
 
 		// Student
-		err = pdf.SetFont("DroidSans", "", 50)
+		err = pdf.SetFont("DroidSans", "", 26)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -76,7 +78,7 @@ func (d *DiplomaSet) ToPDF() {
 		pdf.Cell(nil, s)
 
 		// Course
-		err = pdf.SetFont("DroidSans", "", 30)
+		err = pdf.SetFont("DroidSans", "", 13)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -85,7 +87,7 @@ func (d *DiplomaSet) ToPDF() {
 		pdf.Cell(nil, d.Course)
 
 		// Period
-		err = pdf.SetFont("DroidSans", "", 10)
+		err = pdf.SetFont("DroidSans", "", 11)
 		if err != nil {
 			log.Fatal(err)
 		}
