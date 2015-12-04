@@ -6,7 +6,11 @@ import (
 	"os"
 
 	"github.com/gosimple/slug"
-	"github.com/jung-kurt/gofpdf"
+	"github.com/signintech/gopdf"
+)
+
+const (
+	DroidSansPath string = "/usr/share/fonts/TTF/DroidSans.ttf"
 )
 
 // A Session represents a training session.
@@ -45,33 +49,56 @@ func (d *DiplomaSet) Load(configFile string) {
 }
 
 // Render DiplomaSet to PDF files.
-// FIXME: UTF-8 characters don't display properly, since cp1252 encoding is used
-// 		See http://godoc.org/github.com/jung-kurt/gofpdf#Fpdf.SetFont
+// FIXME: Make this DRY by writing a utility function
 func (d *DiplomaSet) ToPDF() {
 	// Create OutputDir for PDFs
 	os.MkdirAll(d.OutputDir, 0700)
 
 	for _, s := range d.Students {
-		pdf := gofpdf.New("L", "in", "Letter", "")
+		pdf := gopdf.GoPdf{}
+		pdf.Start(gopdf.Config{Unit: "in", PageSize: gopdf.Rect{W: 11, H: 8.5}})
 		pdf.AddPage()
 
-		pdf.SetFontLocation(".")
-		pdf.AddFont("DroidSans", "", "DroidSans.json")
-
-		pdf.Image(d.Image, d.Overlay["Image"][0], d.Overlay["Image"][1], 0, 0, false, "", 0, "")
-
-		pdf.SetFont("DroidSans", "", 50)
-		pdf.Text(d.Overlay["Student"][0], d.Overlay["Student"][1], s)
-		pdf.SetFont("DroidSans", "", 30)
-		pdf.Text(d.Overlay["Course"][0], d.Overlay["Course"][1], d.Course)
-		pdf.SetFont("DroidSans", "", 10)
-		pdf.Text(d.Overlay["Period"][0], d.Overlay["Period"][1], d.Period)
-		pdf.Text(d.Overlay["Instructor"][0], d.Overlay["Instructor"][1], d.Instructor)
-
-		// FIXME: do this via a separate function for greater testability?
-		err := pdf.OutputFileAndClose(d.OutputDir + "/" + slug.Make(s) + ".pdf")
+		err := pdf.AddTTFFont("DroidSans", DroidSansPath)
 		if err != nil {
 			log.Fatal(err)
 		}
+
+		pdf.Image(d.Image, d.Overlay["Image"][0], d.Overlay["Image"][1], nil)
+
+		// Student
+		err = pdf.SetFont("DroidSans", "", 50)
+		if err != nil {
+			log.Fatal(err)
+		}
+		pdf.SetX(d.Overlay["Student"][0])
+		pdf.SetY(d.Overlay["Student"][1])
+		pdf.Cell(nil, s)
+
+		// Course
+		err = pdf.SetFont("DroidSans", "", 30)
+		if err != nil {
+			log.Fatal(err)
+		}
+		pdf.SetX(d.Overlay["Course"][0])
+		pdf.SetY(d.Overlay["Course"][1])
+		pdf.Cell(nil, d.Course)
+
+		// Period
+		err = pdf.SetFont("DroidSans", "", 10)
+		if err != nil {
+			log.Fatal(err)
+		}
+		pdf.SetX(d.Overlay["Period"][0])
+		pdf.SetY(d.Overlay["Period"][1])
+		pdf.Cell(nil, d.Period)
+
+		// Instructor
+		pdf.SetX(d.Overlay["Instructor"][0])
+		pdf.SetY(d.Overlay["Instructor"][1])
+		pdf.Cell(nil, d.Instructor)
+
+		// FIXME: do this via a separate function for greater testability?
+		pdf.WritePdf(d.OutputDir + "/" + slug.Make(s) + ".pdf")
 	}
 }
