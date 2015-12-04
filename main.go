@@ -40,7 +40,7 @@ func (d *DiplomaSet) Dump() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Print("%s", data)
+	log.Printf("%s", data)
 }
 
 // Load reads config from JSON file, populating a DiplomaSet.
