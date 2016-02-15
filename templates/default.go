@@ -5,7 +5,7 @@ import (
 )
 
 var Default = &diploma.Template{
-	Image: "logo2.jpg",
+	Image: "logo.jpg",
 	Overlay: map[string][2]float64{
 		"Recipient":  [2]float64{300, 200},
 		"Course":     [2]float64{300, 240},
