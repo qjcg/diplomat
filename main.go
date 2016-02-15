@@ -6,6 +6,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"path/filepath"
 
 	"github.com/gosimple/slug"
 	"github.com/signintech/gopdf"
@@ -103,6 +104,7 @@ func (d *DiplomaSet) ToPDF() {
 		pdf.Cell(nil, d.Instructor)
 
 		// FIXME: do this via a separate function for greater testability?
-		pdf.WritePdf(d.OutputDir + "/" + slug.Make(s) + ".pdf")
+		pdfPath := filepath.Join(d.OutputDir, slug.Make(s)+".pdf")
+		pdf.WritePdf(pdfPath)
 	}
 }

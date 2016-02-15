@@ -4,6 +4,7 @@ import (
 	"flag"
 	"log"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/gosimple/slug"
@@ -14,6 +15,7 @@ import (
 
 func main() {
 	course := flag.String("c", "", "course name")
+	outDir := flag.String("d", "diplomas", "output directory")
 	period := flag.String("p", "", "training period (dates)")
 	students := flag.String("s", "Joe Learnery", "list of students (comma-separated)")
 	instructor := flag.String("i", "Rory Q. Teachalot", "instructor's name")
@@ -35,12 +37,13 @@ func main() {
 	d := &diploma.DiplomaSet{
 		Session:   *session,
 		Template:  *template,
-		OutputDir: "diplomas/" + slug.Make(*course),
+		OutputDir: filepath.Join(*outDir, slug.Make(*course)),
 	}
 	d.ToPDF()
 
 	// create JSON config file
-	conf, err := os.Create(d.OutputDir + "/diplomas.json")
+	confPath := filepath.Join(d.OutputDir, "diplomas.json")
+	conf, err := os.Create(confPath)
 	defer conf.Close()
 	if err != nil {
 		log.Fatal(err)
