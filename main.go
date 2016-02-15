@@ -2,6 +2,8 @@ package diploma
 
 import (
 	"encoding/json"
+	"fmt"
+	"io"
 	"log"
 	"os"
 
@@ -34,13 +36,13 @@ type DiplomaSet struct {
 	OutputDir string
 }
 
-// Dump config to JSON file in diplomas directory.
-func (d *DiplomaSet) Dump() {
+// Dump JSON config to an io.Writer.
+func (d *DiplomaSet) Dump(w io.Writer) {
 	data, err := json.MarshalIndent(d, "", "  ")
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("%s", data)
+	fmt.Fprintf(w, "%s\n", data)
 }
 
 // Load reads config from JSON file, populating a DiplomaSet.
