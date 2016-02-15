@@ -5,12 +5,12 @@ import (
 )
 
 var Default = &diploma.Template{
-	Image: "logo.png",
+	Image: "logo2.jpg",
 	Overlay: map[string][2]float64{
-		"Recipient":  [2]float64{4, 200},
-		"Course":     [2]float64{4, 240},
-		"Period":     [2]float64{4, 260},
-		"Instructor": [2]float64{4, 280},
+		"Recipient":  [2]float64{300, 200},
+		"Course":     [2]float64{300, 240},
+		"Period":     [2]float64{300, 260},
+		"Instructor": [2]float64{300, 280},
 		"Image":      [2]float64{10, 10},
 	},
 }
