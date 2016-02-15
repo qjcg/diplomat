@@ -1,9 +1,6 @@
 {
 	"ImportPath": "github.com/qjcg/diploma",
-	"GoVersion": "go1.4.2",
-	"Packages": [
-		"./..."
-	],
+	"GoVersion": "go1.5.3",
 	"Deps": [
 		{
 			"ImportPath": "github.com/fiam/gounidecode/unidecode",
@@ -14,8 +11,8 @@
 			"Rev": "7fb15518b53e02e34e2105c042eaee41ad400534"
 		},
 		{
-			"ImportPath": "github.com/jung-kurt/gofpdf",
-			"Rev": "5ab948816dec877984e3c1c031f423cb7fccf30f"
+			"ImportPath": "github.com/signintech/gopdf",
+			"Rev": "f7ab28e444f95b00e6c32ba27ab87cbdbf23927b"
 		}
 	]
 }
