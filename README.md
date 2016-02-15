@@ -6,7 +6,7 @@ Generate PDF diplomas.
         - instructor
         - course title
         - dates
-        - student names
+        - recipient names
         - template
         - output directory
     - OR
@@ -46,7 +46,7 @@ The contents of a template file:
     "text": {
         "instructor": {"x": 100, "y": 100},
         "dates": {"x": 100, "y": 100},
-        "student": {"x": 100, "y": 100},
+        "recipient": {"x": 100, "y": 100},
     }
 }
 ```

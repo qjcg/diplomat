@@ -13,7 +13,7 @@ var sessionTests = []Session{
 		Course:     "Fun with JavaScript",
 		Period:     "July 12-15 2015 (22.5 hours)",
 		Instructor: "Joe Instructor",
-		Students: []string{
+		Recipients: []string{
 			"Joe Student",
 			"Jenny Student",
 			"Jean Étudiant",
@@ -25,9 +25,9 @@ var sessionTests = []Session{
 
 var templateTests = []Template{
 	Template{
-		Image: "logo.png",
+		Image: "logo2.jpg",
 		Overlay: map[string][2]float64{
-			"Student":    [2]float64{300, 200},
+			"Recipient":  [2]float64{300, 200},
 			"Course":     [2]float64{300, 240},
 			"Period":     [2]float64{300, 260},
 			"Instructor": [2]float64{300, 280},

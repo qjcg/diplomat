@@ -21,7 +21,7 @@ type Session struct {
 	Course     string
 	Period     string
 	Instructor string
-	Students   []string
+	Recipients []string
 }
 
 // A Template conains an image file path along with a map of text overlay coordinates.
@@ -57,7 +57,7 @@ func (d *DiplomaSet) ToPDF() {
 	// Create OutputDir for PDFs
 	os.MkdirAll(d.OutputDir, 0700)
 
-	for _, s := range d.Students {
+	for _, s := range d.Recipients {
 		pdf := gopdf.GoPdf{}
 		// Letter: 612x792
 		// See https://www.gnu.org/software/gv/manual/html_node/Paper-Keywords-and-paper-size-in-points.html
@@ -69,15 +69,16 @@ func (d *DiplomaSet) ToPDF() {
 			log.Fatal(err)
 		}
 
+		// TODO: confirm this needs to be a .jpg, not .png?
 		pdf.Image(d.Image, d.Overlay["Image"][0], d.Overlay["Image"][1], nil)
 
-		// Student
+		// Recipient
 		err = pdf.SetFont("DroidSans", "", 26)
 		if err != nil {
 			log.Fatal(err)
 		}
-		pdf.SetX(d.Overlay["Student"][0])
-		pdf.SetY(d.Overlay["Student"][1])
+		pdf.SetX(d.Overlay["Recipient"][0])
+		pdf.SetY(d.Overlay["Recipient"][1])
 		pdf.Cell(nil, s)
 
 		// Course
