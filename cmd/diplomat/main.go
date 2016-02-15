@@ -2,6 +2,8 @@ package main
 
 import (
 	"flag"
+	"log"
+	"os"
 	"strings"
 
 	"github.com/gosimple/slug"
@@ -36,4 +38,12 @@ func main() {
 		OutputDir: "diplomas/" + slug.Make(*course),
 	}
 	d.ToPDF()
+
+	// create JSON config file
+	conf, err := os.Create(d.OutputDir + "/diplomas.json")
+	defer conf.Close()
+	if err != nil {
+		log.Fatal(err)
+	}
+	d.Dump(conf)
 }
