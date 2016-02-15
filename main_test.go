@@ -1,6 +1,7 @@
 package diploma
 
 import (
+	"log"
 	"os"
 	"testing"
 
@@ -51,7 +52,12 @@ func TestToPDF(t *testing.T) {
 
 func TestDump(t *testing.T) {
 	for _, d := range diplomaSetTests {
-		d.Dump(os.Stdout)
+		f, err := os.Create(d.OutputDir + "/diplomas.json")
+		defer f.Close()
+		if err != nil {
+			log.Fatal(err)
+		}
+		d.Dump(f)
 	}
 }
 
