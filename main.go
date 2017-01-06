@@ -16,7 +16,7 @@ const (
 	DroidSansPath string = "/usr/share/fonts/TTF/DroidSans.ttf"
 )
 
-// A Session represents a training session.
+// Session represents a training session.
 type Session struct {
 	Course     string
 	Period     string
@@ -24,20 +24,22 @@ type Session struct {
 	Recipients []string
 }
 
-// A Template conains an image file path along with a map of text overlay coordinates.
+// Template contains an image file path along with a map of text overlay
+// coordinates.
 type Template struct {
 	Image   string
 	Overlay map[string][2]float64
 }
 
-// A DiplomaSet contains an OutputDir for PDFs, and embedded Template and Session structs.
+// DiplomaSet contains an OutputDir for PDFs, and embedded Template and Session
+// structs.
 type DiplomaSet struct {
 	Session
 	Template
 	OutputDir string
 }
 
-// Dump JSON config to an io.Writer.
+// Dump writes JSON config to an io.Writer.
 func (d *DiplomaSet) Dump(w io.Writer) {
 	data, err := json.MarshalIndent(d, "", "  ")
 	if err != nil {
@@ -51,14 +53,16 @@ func (d *DiplomaSet) Load(configFile string) {
 	return
 }
 
-// Render DiplomaSet to PDF files.
+// ToPDF renders a DiplomaSet to PDF files.
 // FIXME: Make this DRY by writing a utility function
 func (d *DiplomaSet) ToPDF() {
+
 	// Create OutputDir for PDFs
 	os.MkdirAll(d.OutputDir, 0700)
 
 	for _, s := range d.Recipients {
 		pdf := gopdf.GoPdf{}
+
 		// Letter: 612x792
 		// See https://www.gnu.org/software/gv/manual/html_node/Paper-Keywords-and-paper-size-in-points.html
 		pdf.Start(gopdf.Config{Unit: "pt", PageSize: gopdf.Rect{W: 792, H: 612}})
