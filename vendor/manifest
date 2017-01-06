@@ -1,0 +1,29 @@
+{
+	"version": 0,
+	"dependencies": [
+		{
+			"importpath": "github.com/gosimple/slug",
+			"repository": "https://github.com/gosimple/slug",
+			"vcs": "git",
+			"revision": "32efb997950eba210b1880d8cf52b601c1b5abe3",
+			"branch": "master",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/rainycape/unidecode",
+			"repository": "https://github.com/rainycape/unidecode",
+			"vcs": "git",
+			"revision": "cb7f23ec59bec0d61b19c56cd88cee3d0cc1870c",
+			"branch": "master",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/signintech/gopdf",
+			"repository": "https://github.com/signintech/gopdf",
+			"vcs": "git",
+			"revision": "1d1bd32e4693415b241d95603f8d05839eed2b7c",
+			"branch": "master",
+			"notests": true
+		}
+	]
+}
