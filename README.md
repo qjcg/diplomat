@@ -1,4 +1,9 @@
+# Diplomat
+
 Generate PDF diplomas.
+
+**NOTE: This is pre-alpha software. Several
+features are not yet fully implemented.**
 
 # Features
 - cli tool takes as argument:
