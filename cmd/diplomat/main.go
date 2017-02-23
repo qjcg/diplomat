@@ -9,8 +9,8 @@ import (
 
 	"github.com/gosimple/slug"
 
-	"github.com/qjcg/diploma"
-	"github.com/qjcg/diploma/templates"
+	"github.com/qjcg/diplomat"
+	"github.com/qjcg/diplomat/templates"
 )
 
 func main() {

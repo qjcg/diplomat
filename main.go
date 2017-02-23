@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	DroidSansPath string = "/usr/share/fonts/TTF/DroidSans.ttf"
+	DroidSansPath = "/usr/share/fonts/TTF/DroidSans.ttf"
 )
 
 // Session represents a training session.
