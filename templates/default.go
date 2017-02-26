@@ -1,7 +1,7 @@
 package templates
 
 import (
-	"github.com/qjcg/diploma"
+	"github.com/qjcg/diplomat"
 )
 
 var Default = &diploma.Template{
