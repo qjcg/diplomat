@@ -1,10 +1,7 @@
-package templates
+package diploma
 
-import (
-	"github.com/qjcg/diplomat/pkg/diploma"
-)
-
-var Default = &diploma.Template{
+// DefaultTemplate is the default diploma template.
+var DefaultTemplate = &Template{
 	Image: "logo.svg",
 	Overlay: map[string][2]float64{
 		"Recipient":  {300, 200},

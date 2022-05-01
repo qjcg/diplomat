@@ -11,7 +11,6 @@ import (
 	"github.com/gosimple/slug"
 
 	"github.com/qjcg/diplomat/pkg/diploma"
-	"github.com/qjcg/diplomat/templates"
 )
 
 //go:embed fonts
@@ -29,7 +28,7 @@ func main() {
 	flag.Parse()
 
 	// TODO: use cli template option if provided
-	template := templates.Default
+	template := diploma.DefaultTemplate
 
 	session := &diploma.Session{
 		Course:     *course,
