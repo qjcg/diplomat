@@ -9,7 +9,7 @@ import (
 
 	"github.com/gosimple/slug"
 
-	"github.com/qjcg/diplomat"
+	"github.com/qjcg/diplomat/pkg/diploma"
 	"github.com/qjcg/diplomat/templates"
 )
 
