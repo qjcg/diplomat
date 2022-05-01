@@ -1,6 +1,7 @@
 package main
 
 import (
+	"embed"
 	"flag"
 	"log"
 	"os"
@@ -12,6 +13,9 @@ import (
 	"github.com/qjcg/diplomat/pkg/diploma"
 	"github.com/qjcg/diplomat/templates"
 )
+
+//go:embed fonts
+var fonts embed.FS
 
 func main() {
 	course := flag.String("c", "", "course name")
@@ -39,7 +43,12 @@ func main() {
 		Template:  *template,
 		OutputDir: filepath.Join(*outDir, slug.Make(*course)),
 	}
-	d.ToPDF()
+	fontData, err := fonts.ReadFile(("fonts/DroidSans.ttf"))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	d.ToPDF("DroidSans", fontData)
 
 	// create JSON config file
 	confPath := filepath.Join(d.OutputDir, "diplomas.json")

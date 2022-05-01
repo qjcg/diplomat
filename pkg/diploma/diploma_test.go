@@ -1,4 +1,4 @@
-package diploma
+package diploma_test
 
 import (
 	"log"
@@ -6,10 +6,12 @@ import (
 	"testing"
 
 	"github.com/gosimple/slug"
+
+	"github.com/qjcg/diplomat/pkg/diploma"
 )
 
-var sessionTests = []Session{
-	Session{
+var sessionTests = []diploma.Session{
+	{
 		Course:     "Fun with JavaScript",
 		Period:     "July 12-15 2015 (22.5 hours)",
 		Instructor: "Joe Instructor",
@@ -23,21 +25,21 @@ var sessionTests = []Session{
 	},
 }
 
-var templateTests = []Template{
-	Template{
+var templateTests = []diploma.Template{
+	{
 		Image: "logo.jpg",
 		Overlay: map[string][2]float64{
-			"Recipient":  [2]float64{300, 200},
-			"Course":     [2]float64{300, 240},
-			"Period":     [2]float64{300, 260},
-			"Instructor": [2]float64{300, 280},
-			"Image":      [2]float64{10, 10},
+			"Recipient":  {300, 200},
+			"Course":     {300, 240},
+			"Period":     {300, 260},
+			"Instructor": {300, 280},
+			"Image":      {10, 10},
 		},
 	},
 }
 
-var diplomaSetTests = []*DiplomaSet{
-	&DiplomaSet{
+var diplomaSetTests = []*diploma.DiplomaSet{
+	{
 		Session:   sessionTests[0],
 		Template:  templateTests[0],
 		OutputDir: "./diplomas/" + slug.Make(sessionTests[0].Course),
@@ -45,8 +47,13 @@ var diplomaSetTests = []*DiplomaSet{
 }
 
 func TestToPDF(t *testing.T) {
+	fontData, err := os.ReadFile("../../cmd/diplomat/fonts/DroidSans.ttf")
+	if err != nil {
+		t.Fatalf("Error loading font: %v", err)
+	}
+
 	for _, d := range diplomaSetTests {
-		d.ToPDF()
+		d.ToPDF("DroidSans", fontData)
 	}
 }
 

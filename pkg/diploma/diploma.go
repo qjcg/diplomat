@@ -12,9 +12,11 @@ import (
 	"github.com/signintech/gopdf"
 )
 
-const (
-	DroidSansPath = "/usr/share/fonts/TTF/DroidSans.ttf"
-)
+// PageSizeLetterLandscape provides landscape pages.
+var PageSizeLetterLandscape = &gopdf.Rect{
+	W: 792,
+	H: 612,
+}
 
 // Session represents a training session.
 type Session struct {
@@ -55,7 +57,7 @@ func (d *DiplomaSet) Load(configFile string) {
 
 // ToPDF renders a DiplomaSet to PDF files.
 // FIXME: Make this DRY by writing a utility function
-func (d *DiplomaSet) ToPDF() {
+func (d *DiplomaSet) ToPDF(fontFamily string, fontData []byte) {
 
 	// Create OutputDir for PDFs
 	os.MkdirAll(d.OutputDir, 0700)
@@ -63,12 +65,10 @@ func (d *DiplomaSet) ToPDF() {
 	for _, s := range d.Recipients {
 		pdf := gopdf.GoPdf{}
 
-		// Letter: 612x792
-		// See https://www.gnu.org/software/gv/manual/html_node/Paper-Keywords-and-paper-size-in-points.html
-		pdf.Start(gopdf.Config{Unit: "pt", PageSize: gopdf.Rect{W: 792, H: 612}})
+		pdf.Start(gopdf.Config{PageSize: *PageSizeLetterLandscape})
 		pdf.AddPage()
 
-		err := pdf.AddTTFFont("DroidSans", DroidSansPath)
+		err := pdf.AddTTFFontData(fontFamily, fontData)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -77,7 +77,7 @@ func (d *DiplomaSet) ToPDF() {
 		pdf.Image(d.Image, d.Overlay["Image"][0], d.Overlay["Image"][1], nil)
 
 		// Recipient
-		err = pdf.SetFont("DroidSans", "", 26)
+		err = pdf.SetFont(fontFamily, "", 26)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -86,7 +86,7 @@ func (d *DiplomaSet) ToPDF() {
 		pdf.Cell(nil, s)
 
 		// Course
-		err = pdf.SetFont("DroidSans", "", 13)
+		err = pdf.SetFont(fontFamily, "", 13)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -95,7 +95,7 @@ func (d *DiplomaSet) ToPDF() {
 		pdf.Cell(nil, d.Course)
 
 		// Period
-		err = pdf.SetFont("DroidSans", "", 11)
+		err = pdf.SetFont(fontFamily, "", 11)
 		if err != nil {
 			log.Fatal(err)
 		}
